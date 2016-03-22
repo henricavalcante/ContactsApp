@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head
+
+<meta charset="UTF-8">
+
+<title>Git hub Users</title>
+
+</head>
+
+<body>
+
+<div>
+
+<table>
+
+<th>
+
+<td><h3>People on Github</h3></td>
+
+</th>
+
+<tr ng-repeat="x in userData | limitTo:4|orderBy:sortType:sortIdReverse" ng-hide="buttonClicked && $even">
+
+<td><img src="{{x.avatar_url}}"width="80" height="80" /></td>
+<td>{{ x.login }}
+
+<br/>
+
+{{ x.id }}
+
+</td>
+
+<td><a href="{{x.html_url}}"target="_blank"><button>view</button></a></td>
+
+</tr>
+
+</table>
+
+<hr/>
+
+<button ng-click="sortType='id';sortIdReverse=!sortIdReverse;determineText()">Sort by GitHub Id ({{sortIdText}})</button>
+
+<button ng-click="sortType='id';sortIdReverse=!sortIdReverse;evenList()">Filter out even ID's ({{sortEvenIdText}})</button>
+
+</div>
+
+<script>
+
+angular.module('myApp', [])
+
+ .controller('gitHubDataController', ['$scope','$http', function($scope,$http) {
+
+$http.get("https://api.github.com/users")
+
+ .success(function(data) {
+
+ $scope.userData = data;
+
+ });
+
+$scope.sortIdReverse  = false; // set the 
+
+default sort order
+
+$scope.sortEvenIdReverse  =false;  // set 
+
+the default sort order
+
+$scope.buttonClicked=false;
+
+$scope.sortIdText="inactive";
+
+$scope.sortEvenIdText="inactive";
+
+$scope.determineText = function(){
+
+$scope.buttonClicked = false;
+
+if($scope.sortIdReverse==false) {
+
+ $scope.sortIdText ='inactive';
+
+ } else {
+
+$scope.sortIdText ='active';
+
+}
+
+}
+
+$scope.evenList = function() {
+
+ $scope.buttonClicked = true;
+
+if($scope.sortIdReverse==false) {
+
+ $scope.sortEvenIdText ='inactive';
+
+ } else {
+
+$scope.sortEvenIdText ='active';
+
+}
+
+}
+
+}]);
+
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</body>
+
+</html>
